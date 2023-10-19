@@ -44,6 +44,10 @@ When you're finished, select the option to "Build Team."
 
 3. The application will generate an HTML file in the output directory, which displays the team profiles. You can open this HTML file in a web browser or share it with your team. 
 
+## Screenshots
+Generated HTML example
+
+![screenshot of index.html](src/screenshot.png)
 ## Contributing
 
 Contributions are welcome! If you have any ideas or suggestions to improve the Team Profile Generator, please submit a pull request or open an issue on the [GitHub repository](https://github.com/Mam-Rahman/team-profile-generator).
