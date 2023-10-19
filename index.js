@@ -10,55 +10,95 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./src/page-template.js");
 
-
-// TODO: Write Code to gather information about the development team members, and render the HTML file.
 const idList = []
 const teamMembers = []
-
 
 const appMenu = () => {
 
     function buildTeam() {
-
+        if(!fs.existsSync(OUTPUT_DIR)) {
+            fs.mkdirSync(OUTPUT_DIR)
+        }
+        fs.writeFileSync(outputPath, render(teamMembers), 'UTF-8');
     }
-    
-    function addIntern() {
 
+    function addIntern() {
+        inquirer.prompt([
+            {
+                type: "input",
+                name: "internName",
+                message: "What is your intern name?"
+            },
+            {
+                type: "input",
+                name: "internId",
+                message: "What is your intern id?"
+            },
+            {
+                type: "input",
+                name: "internEmail",
+                message: "What is your intern email?"
+            },
+            {
+                type: "input",
+                name: "internSchool",
+                message: "What is your intern school?"
+            },
+        ]).
+        then(answers => {
+            const intern = new Intern(
+                answers.internName, 
+                answers.internId, 
+                answers.internEmail, 
+                answers.interSchool
+            );
+            teamMembers.push(intern);
+            idList.push(answers.internId);
+            //console.log(intern);
+            createTeam()
+        })
     }
 
     function addEngineer() {
-        inquirer.prompt([
+        inquirer
+         .prompt([
             {
-               type: "input",
-               name: "engineerName",
-               message: "What is your engineer name?" 
+                type: "input",
+                name: "engineerName",
+                message: "What is your engineer name?"
             },
             {
                 type: "input",
                 name: "engineerId",
-                message: "What is your engineer id?" 
+                message: "What is your engineer id?"
             },
             {
                 type: "input",
                 name: "engineerEmail",
-                message: "What is your engineer email?" 
+                message: "What is your engineer email?"
             },
             {
                 type: "input",
                 name: "engineerGithub",
-                message: "What is your engineer github?" 
+                message: "What is your engineer github?"
             },
-        ]).then(answers => {
-            const engineer = new Engineer(answers.engineerName, answers.engineerId, answers.engineerEmail, answers.engineerGithub);
+        ])
+        .then(answers => {
+            const engineer = new Engineer(
+                answers.engineerName, 
+                answers.engineerId, 
+                answers.engineerEmail, 
+                answers.engineerGithub
+            );
             teamMembers.push(engineer);
             idList.push(answers.engineerId);
-            console.log(engineer);
+            //console.log(engineer);
             createTeam()
         })
     }
 
 
-    function createTeam(){
+    function createTeam() {
         inquirer.prompt([
             {
                 type: "list",
@@ -70,35 +110,36 @@ const appMenu = () => {
                     "I dont want to add anymore team members"
                 ]
             }
-        ]).then(userChoice => {
-            if(userChoice.memberChoice === "Engineer") {
+        ])
+        .then(userChoice => {
+            if (userChoice.memberChoice === "Engineer") {
                 // Add Engineer
-                addEngineer(); 
-            } else if(userChoice.memberChoice === "Intern") {
+                addEngineer();
+            } else if (userChoice.memberChoice === "Intern") {
                 // Add Intern
                 addIntern();
             } else {
                 // build team function
-                buildTeam(); 
+                buildTeam();
             }
-        })    
+        })
     }
 
 
 
-   function createManager(){
-       console.log("Please build your team!");
-       inquirer.prompt([
+    function createManager() {
+        console.log("Please build your team!");
+        inquirer.prompt([
             {
-               type: "input",
-               name: "managerName",
-               message: "What is the manager's name?",
-               validate: answer => {
-                   if(answer !== ""){
-                       return true
-                   }
-                   return "Please enter at least one character."
-                }            
+                type: "input",
+                name: "managerName",
+                message: "What is the manager's name?",
+                validate: answer => {
+                    if (answer !== "") {
+                        return true
+                    }
+                    return "Please enter at least one character."
+                }
             },
             {
                 type: "input",
@@ -116,19 +157,18 @@ const appMenu = () => {
                 name: "managerOfficeNumber",
                 message: "What is the team manager's office number?"
             },
-            
-       ]).then(answers => {
-           const manager = new Manager(answers.managerName, answers.managerId, answers.managerEmail, answers.managerOfficeNumber);
-           console.log(manager);
-           teamMembers.push(manager);
-           idList.push(answers.managerId);
-           createTeam(); 
-       })         
+
+        ]).then(answers => {
+            const manager = new Manager(answers.managerName, answers.managerId, answers.managerEmail, answers.managerOfficeNumber);
+            //console.log(manager);
+            teamMembers.push(manager);
+            idList.push(answers.managerId);
+            createTeam();
+        })
     }
 
 
     createManager();
 }
-
 
 appMenu();

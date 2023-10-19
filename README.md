@@ -36,10 +36,12 @@ This project is designed to streamline the process of creating a team profile, m
 1. After you've installed the project and its dependencies, run the application:
     ```bash
     node index.js
+
 2. Follow the prompts to enter information about your team members:
 Start by entering details about the team manager.
 Add engineers and/or interns as needed.
 When you're finished, select the option to "Build Team."
+
 3. The application will generate an HTML file in the output directory, which displays the team profiles. You can open this HTML file in a web browser or share it with your team. 
 
 ## Contributing
